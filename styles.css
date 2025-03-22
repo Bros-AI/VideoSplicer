@@ -785,4 +785,205 @@ video {
     .transition-item {
         width: 80px;
     }
+    
+    /* Enhanced mobile responsiveness for timeline controls */
+    .timeline-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .timeline-controls {
+        margin-top: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    /* Make preview button more prominent on mobile */
+    #preview-btn {
+        order: -1;
+        width: 100%;
+        margin: 5px 0 10px;
+        padding: 12px;
+        font-size: 16px;
+        font-weight: bold;
+        background-color: #2ecc71;
+    }
+    
+    #preview-btn:hover {
+        background-color: #27ae60;
+    }
+    
+    /* Adjust other controls */
+    .zoom-control, .time-info {
+        margin: 5px;
+    }
+    
+    #add-transition-btn {
+        width: 100%;
+        margin: 5px 0;
+    }
+    
+    /* Make timeline overview more usable on small screens */
+    .timeline-overview {
+        height: 30px;
+    }
+    
+    /* Improved file list for mobile */
+    .file-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .file-controls {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 8px;
+    }
+}
+
+/* Mobile-specific enhancements */
+@media (max-width: 480px) {
+    /* Fixed position floating preview button for very small screens */
+    .mobile-preview-button {
+        display: block;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 100;
+        background-color: #2ecc71;
+        color: white;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .mobile-preview-button:hover, 
+    .mobile-preview-button:active {
+        background-color: #27ae60;
+        transform: scale(1.05);
+    }
+    
+    .mobile-preview-button.hidden {
+        display: none;
+    }
+    
+    /* Better spacing for mobile */
+    .container {
+        padding: 10px;
+        margin: 0;
+        width: 100%;
+        border-radius: 0;
+    }
+    
+    body {
+        padding: 0;
+    }
+    
+    /* Improve mobile touch experience */
+    .btn, .remove-btn, .timeline-clip {
+        min-height: 44px; /* Minimum touch target size */
+    }
+    
+    /* Keep download buttons visible and usable */
+    .download-btn-container {
+        position: sticky;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 10px 0;
+        z-index: 10;
+    }
+}
+
+/* Improved orientation support */
+@media (max-height: 500px) and (orientation: landscape) {
+    /* Optimize for landscape orientation on mobile */
+    .container {
+        padding: 10px;
+    }
+    
+    .timeline-container {
+        margin: 10px 0;
+    }
+    
+    .timeline {
+        min-height: 120px;
+    }
+    
+    .timeline-track {
+        height: 60px;
+    }
+    
+    .timeline-clip {
+        height: 60px;
+    }
+    
+    /* Ensure preview button is always visible in landscape mode */
+    #preview-btn {
+        position: sticky;
+        bottom: 10px;
+        margin-top: 15px;
+        width: 100%;
+        z-index: 100;
+        background-color: #2ecc71;
+        font-weight: bold;
+    }
+    
+    /* Hide redundant content in landscape to save space */
+    .info-message {
+        display: none;
+    }
+    
+    h1 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }
+}
+
+/* Touch-friendly improvements */
+@media (pointer: coarse) {
+    /* Larger touch targets for touch screens */
+    .timeline-clip {
+        min-height: 50px;
+    }
+    
+    .zoom-control button {
+        width: 32px;
+        height: 32px;
+    }
+    
+    /* Improve drag handle size */
+    .timeline-clip-header {
+        padding: 8px;
+        min-height: 36px;
+    }
+    
+    /* Add scrolling indicators */
+    .timeline-wrapper::before,
+    .timeline-wrapper::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 15px;
+        z-index: 5;
+        pointer-events: none;
+    }
+    
+    .timeline-wrapper::before {
+        left: 0;
+        background: linear-gradient(to right, rgba(0,0,0,0.1), transparent);
+    }
+    
+    .timeline-wrapper::after {
+        right: 0;
+        background: linear-gradient(to left, rgba(0,0,0,0.1), transparent);
+    }
 }
