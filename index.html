@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Editor with Transitions</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Video Editor with Transitions</h1>
+        
+        <div class="info-message">
+            <p>Upload multiple video files, arrange them on the timeline, and add transitions between clips.</p>
+            <p><strong>Key Features:</strong></p>
+            <ul style="margin-left: 20px; margin-top: 5px;">
+                <li>Drag videos on the timeline to adjust timing</li>
+                <li>Add professional transitions between clips</li>
+                <li>Preview your edits in real-time</li>
+                <li>Export the final video with one click</li>
+                <li>Reorder videos using the video list controls</li>
+            </ul>
+        </div>
+        
+        <div id="upload-section" class="upload-section">
+            <p>Drag & drop video files here or</p>
+            <input type="file" id="file-input" accept="video/*" multiple>
+            <button id="select-files-btn" class="btn">Select Files</button>
+        </div>
+        
+        <!-- Timeline Area -->
+        <div id="timeline-container" class="timeline-container" style="display: none;">
+            <div class="timeline-header">
+                <h2>Timeline</h2>
+                <div class="timeline-controls">
+                    <div class="zoom-control">
+                        <button id="zoom-out-btn" title="Zoom Out">-</button>
+                        <span>Zoom</span>
+                        <button id="zoom-in-btn" title="Zoom In">+</button>
+                        <button id="fit-timeline-btn" title="Fit All Videos" style="margin-left: 5px; font-size: 10px;">⟷</button>
+                    </div>
+                    <div class="time-info">
+                        <span id="timeline-position">00:00:00</span>
+                        <span style="margin: 0 5px;">/</span>
+                        <span id="timeline-duration">00:00:00</span>
+                    </div>
+                    <button id="add-transition-btn" class="btn" disabled>Add Transition</button>
+                    <button id="preview-btn" class="btn">Preview</button>
+                </div>
+            </div>
+            
+            <div class="timeline-wrapper">
+                <div id="timeline" class="timeline">
+                    <div id="timeline-scale" class="timeline-scale"></div>
+                    <div id="timeline-track" class="timeline-track">
+                        <div class="timeline-track-label">Video</div>
+                    </div>
+                    <div id="timeline-current-time" class="timeline-current-time"></div>
+                </div>
+            </div>
+            
+            <!-- Timeline Overview -->
+            <div id="timeline-overview" class="timeline-overview">
+                <div id="timeline-overview-content" class="timeline-overview-content"></div>
+                <div id="timeline-overview-window" class="timeline-overview-window"></div>
+            </div>
+        </div>
+        
+        <!-- Transitions Panel -->
+        <div id="transitions-panel" class="transitions-panel" style="display: none;">
+            <h3>Transition Effects</h3>
+            <p>Select a transition type and customize its settings.</p>
+            
+            <div class="transition-options">
+                <div class="transition-item" data-type="fade">
+                    <div class="transition-icon">⊞</div>
+                    <div class="transition-name">Fade</div>
+                </div>
+                <div class="transition-item" data-type="wipe">
+                    <div class="transition-icon">⬕</div>
+                    <div class="transition-name">Wipe</div>
+                </div>
+                <div class="transition-item" data-type="dissolve">
+                    <div class="transition-icon">⊡</div>
+                    <div class="transition-name">Dissolve</div>
+                </div>
+                <div class="transition-item" data-type="zoom">
+                    <div class="transition-icon">⊕</div>
+                    <div class="transition-name">Zoom</div>
+                </div>
+                <div class="transition-item" data-type="slide">
+                    <div class="transition-icon">⇥</div>
+                    <div class="transition-name">Slide</div>
+                </div>
+            </div>
+            
+            <div id="transition-options-form" class="transition-options-form">
+                <div class="form-group">
+                    <label for="transition-duration">Duration (seconds):</label>
+                    <input type="range" id="transition-duration" class="form-control" min="0.5" max="3" step="0.1" value="1">
+                    <span id="transition-duration-value">1.0s</span>
+                </div>
+                
+                <div id="wipe-options" class="form-group" style="display: none;">
+                    <label for="wipe-direction">Direction:</label>
+                    <select id="wipe-direction" class="form-control">
+                        <option value="left-to-right">Left to Right</option>
+                        <option value="right-to-left">Right to Left</option>
+                        <option value="top-to-bottom">Top to Bottom</option>
+                        <option value="bottom-to-top">Bottom to Top</option>
+                    </select>
+                </div>
+                
+                <div id="slide-options" class="form-group" style="display: none;">
+                    <label for="slide-direction">Direction:</label>
+                    <select id="slide-direction" class="form-control">
+                        <option value="left">From Left</option>
+                        <option value="right">From Right</option>
+                        <option value="top">From Top</option>
+                        <option value="bottom">From Bottom</option>
+                    </select>
+                </div>
+                
+                <button id="apply-transition-btn" class="btn">Apply Transition</button>
+                <button id="cancel-transition-btn" class="btn" style="background-color: #95a5a6;">Cancel</button>
+            </div>
+        </div>
+        
+        <!-- Progress and Preview -->
+        <div id="progress-container" class="progress-container">
+            <div class="progress-bar">
+                <div id="progress" class="progress"></div>
+            </div>
+            <div id="status" class="status">Ready to process</div>
+        </div>
+        
+        <div id="preview-container" class="preview-container hidden">
+            <h2>Preview</h2>
+            <video id="preview" controls></video>
+            <div class="download-btn-container">
+                <button id="download-btn" class="download-btn">
+                    <span class="download-icon">↓</span>
+                    Export Video
+                </button>
+            </div>
+        </div>
+        
+        <!-- Download Section -->
+        <div id="download-section" class="info-message" style="display: none; background-color: #d4edda; border-left-color: #28a745; text-align: center;">
+            <h3 style="margin-bottom: 10px; color: #155724;">Your Video is Ready!</h3>
+            <p style="margin-bottom: 15px;">Your video has been successfully created and is ready to download.</p>
+            <button id="download-btn-alt" class="btn" style="background-color: #28a745; font-weight: bold; padding: 12px 25px;">
+                <span style="margin-right: 8px;">↓</span> DOWNLOAD VIDEO
+            </button>
+        </div>
+        
+        <!-- MOVED: Video List Section (Moved to bottom) -->
+        <div class="video-list-section">
+            <h2>Video List</h2>
+            <p class="section-info">Manage your videos and change their order using the arrow buttons.</p>
+            <div id="file-list" class="file-list"></div>
+        </div>
+        
+        <div class="info-message" style="margin-top: 30px;">
+            <p><strong>Browser Compatibility:</strong> This tool works best in modern browsers like Chrome, Firefox, Edge or Safari.</p>
+            <p><strong>Video Formats:</strong> MP4, WebM, and MOV files are most compatible. For best results, use videos with similar resolutions.</p>
+        </div>
+    </div>
+
+    <script src="styles.css"></script>
+    <script src="editor.js"></script>
+</body>
+</html>
