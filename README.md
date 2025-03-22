@@ -35,7 +35,7 @@ VideoSplicer runs completely in the browser with no server-side dependencies. To
 
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/username/videosplicer.git](https://github.com/Bros-AI/VideoSplicer)
+   git clone https://github.com/Bros-AI/VideoSplicer
    ```
 
 2. Navigate to the project directory:
